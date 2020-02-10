@@ -10,7 +10,7 @@ class Database
 
     private $username = "root";
 
-    private $password = "root";
+    private $password = ""; // change according to your OS. Windows: '', MAC: 'root'
 
     private static $instance = null;
     public $conn;

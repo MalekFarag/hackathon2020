@@ -36,8 +36,7 @@ CREATE TABLE `tbl_user` (
 --
 
 INSERT INTO `tbl_user` (`ID`, `first_name`, `last_name`, `user_email`, `user_password`, `user_country`, `sub_start`, `last_updated`) VALUES
-(1, 'malek', 'farag', 'email@email.com', 'test', 'canada', '2020-02-10 16:02:54', '2020-02-10 16:02:54'),
-(2, 'malek', 'farag', 'email@email.com', 'test', 'canada', '2020-02-10 16:02:57', '2020-02-10 16:02:57');
+(1, 'malek', 'farag', 'email@email.com', 'test', 'canada', '2020-02-10 16:02:54', '2020-02-10 16:02:54');
 
 --
 -- Indexes for dumped tables

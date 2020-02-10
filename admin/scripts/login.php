@@ -1,6 +1,6 @@
 <?php 
 
-function login( $email, $password, $date){
+function login($email, $password){
     //Debug
     // $message = sprintf('You are trying to login with username %s and password %s', $username, $password);
 
@@ -8,32 +8,48 @@ function login( $email, $password, $date){
     $message_login = '';
     //timezone config
     date_default_timezone_set('America/Toronto');
-    $date = date('Y/m/d H:i:s');
 
     // check user existance
-    $check_exist_query = 'SELECT COUNT(*) FROM tbl_user WHERE user_email= "'.$email.'"'; 
+    $check_exist_query = 'SELECT COUNT(*) FROM tbl_user WHERE user_email= :email'; 
     $user_set = $pdo->prepare($check_exist_query);
+    $user_set->execute(
+        array(
+            ':email'=>$email
+        )
+    );
 
 
     if($user_set->fetchColumn()>0){
         //user exist
-        $get_user_query = 'SELECT * FROM tbl_user WHERE user_email = "'.$email.'"';
-        $get_user_query .= ' AND user_password = "'.$password.'"';
+        $get_user_query = 'SELECT * FROM tbl_user WHERE user_email = :email AND user_password = :password';
         $user_check = $pdo->prepare($get_user_query);
+        $user_check->execute(
+            array(
+                ':email'=>$email,
+                ':password'=>$password
+            )
+        );
 
     while($found_user = $user_check->fetch(PDO::FETCH_ASSOC)){
-        $email = $found_user['user_email'];
+        $id = $found_user['user_id'];
+        $hash = $found_user['hash'];
+        $date = date('Y-m-d H:i:s');
 
         // login successful
         $message_login = 'Login Successful!';
         // updating database
-        $update_query = 'UPDATE tbl_user SET sub_start = "'.$date.'" WHERE email is null;
-                         UPDATE tbl_user SET last_updated = "'.$date.'" WHERE email = "'.$email.'"';
+        $update_query = 'UPDATE tbl_user SET last_updated = :date WHERE user_id = :id';
         $update_set = $pdo->prepare($update_query);
+        $update_set->execute(
+            array(
+                ':date'=>$date,
+                ':id'=>$id
+            )
+        );
     }
 
     if(isset($id)){
-        redirect_to('../index.php');
+        redirect_to("../index.php?email=$email hash=$hash");
     }
 
     }else{
