@@ -1,0 +1,10 @@
+  
+## Redirect
+Redirect 301 /hackathon_2020/load.php /hackathon_2020
+Redirect 301 /load.php /
+
+
+## Deny access
+<FilesMatch "\.?htaccess$">
+    deny from all
+</FilesMatch>
